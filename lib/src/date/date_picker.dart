@@ -79,6 +79,8 @@ class DatePicker extends StatefulWidget {
     this.previousPageSemanticLabel,
     this.nextPageSemanticLabel,
     this.customDate,
+    this.onNextDaysPickerPage,
+    this.onPreviousDaysPickerPage,
   }) {
     assert(!minDate.isAfter(maxDate), "minDate can't be after maxDate");
   }
@@ -228,6 +230,14 @@ class DatePicker extends StatefulWidget {
   /// Custom date cell builder callback
   final Widget Function(DateTime date)? customDate;
 
+  /// associated with the forward navigation control
+  /// of picker type [PickerType.day].
+  final VoidCallback? onNextDaysPickerPage;
+
+  /// associated with the backward navigation control
+  /// of picker type [PickerType.day].
+  final VoidCallback? onPreviousDaysPickerPage;
+
   @override
   State<DatePicker> createState() => _DatePickerState();
 }
@@ -315,6 +325,8 @@ class _DatePickerState extends State<DatePicker> {
               });
               widget.onDateSelected?.call(selectedDate);
             },
+            onNextPage: widget.onNextDaysPickerPage,
+            onPreviousPage: widget.onPreviousDaysPickerPage,
           ),
         );
       case PickerType.months:

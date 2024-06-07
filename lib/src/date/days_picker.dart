@@ -73,6 +73,8 @@ class DaysPicker extends StatefulWidget {
     this.previousPageSemanticLabel = 'Previous Day',
     this.nextPageSemanticLabel = 'Next Day',
     this.customDate,
+    this.onNextPage,
+    this.onPreviousPage,
   }) {
     assert(!minDate.isAfter(maxDate), "minDate can't be after maxDate");
     assert(
@@ -237,6 +239,12 @@ class DaysPicker extends StatefulWidget {
 
   /// Custom date cell builder callback
   final Widget Function(DateTime date)? customDate;
+
+  /// associated with the forward navigation control.
+  final VoidCallback? onNextPage;
+
+  /// associated with the backward navigation control.
+  final VoidCallback? onPreviousPage;
 
   @override
   State<DaysPicker> createState() => _DaysPickerState();
@@ -438,12 +446,14 @@ class _DaysPickerState extends State<DaysPicker> {
                   .replaceAll('١', '1')
                   .replaceAll('٠', '0'),
               onNextPage: () {
+                widget.onNextPage?.call();
                 _pageController.nextPage(
                   duration: const Duration(milliseconds: 300),
                   curve: Curves.ease,
                 );
               },
               onPreviousPage: () {
+                widget.onPreviousPage?.call();
                 _pageController.previousPage(
                   duration: const Duration(milliseconds: 300),
                   curve: Curves.ease,
