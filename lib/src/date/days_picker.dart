@@ -72,6 +72,7 @@ class DaysPicker extends StatefulWidget {
     this.centerLeadingDate = false,
     this.previousPageSemanticLabel = 'Previous Day',
     this.nextPageSemanticLabel = 'Next Day',
+    this.customDate,
   }) {
     assert(!minDate.isAfter(maxDate), "minDate can't be after maxDate");
     assert(
@@ -233,6 +234,9 @@ class DaysPicker extends StatefulWidget {
 
   /// Semantic label for button to go to the next page.
   final String? nextPageSemanticLabel;
+
+  /// Custom date cell builder callback
+  final Widget Function(DateTime date)? customDate;
 
   @override
   State<DaysPicker> createState() => _DaysPickerState();
@@ -470,6 +474,7 @@ class _DaysPickerState extends State<DaysPicker> {
 
                   return DaysView(
                     key: ValueKey<DateTime>(month),
+                    customDate: widget.customDate,
                     currentDate: DateUtils.dateOnly(
                         widget.currentDate ?? DateTime.now()),
                     maxDate: DateUtils.dateOnly(widget.maxDate),

@@ -78,6 +78,7 @@ class DatePicker extends StatefulWidget {
     this.centerLeadingDate = false,
     this.previousPageSemanticLabel,
     this.nextPageSemanticLabel,
+    this.customDate,
   }) {
     assert(!minDate.isAfter(maxDate), "minDate can't be after maxDate");
   }
@@ -224,6 +225,9 @@ class DatePicker extends StatefulWidget {
   /// defaults to `Next Day/Month/Year` according to picker type.
   final String? nextPageSemanticLabel;
 
+  /// Custom date cell builder callback
+  final Widget Function(DateTime date)? customDate;
+
   @override
   State<DatePicker> createState() => _DatePickerState();
 }
@@ -274,6 +278,7 @@ class _DatePickerState extends State<DatePicker> {
         return Padding(
           padding: widget.padding,
           child: DaysPicker(
+            customDate: widget.customDate,
             centerLeadingDate: widget.centerLeadingDate,
             initialDate: _displayedDate,
             selectedDate: _selectedDate,

@@ -35,6 +35,7 @@ class DaysView extends StatelessWidget {
     required this.highlightColor,
     required this.splashColor,
     this.splashRadius,
+    this.customDate,
   }) {
     assert(!minDate.isAfter(maxDate), "minDate can't be after maxDate");
 
@@ -122,6 +123,9 @@ class DaysView extends StatelessWidget {
 
   /// The radius of the ink splash.
   final double? splashRadius;
+
+  /// Custom date cell builder callback
+  final Widget Function(DateTime date)? customDate;
 
   /// Builds widgets showing abbreviated days of week. The first widget in the
   /// returned list corresponds to the first day of week for the current locale.
@@ -236,15 +240,23 @@ class DaysView extends StatelessWidget {
           decoration = currentDateDecoration;
         }
 
-        Widget dayWidget = Container(
-          decoration: decoration,
-          child: Center(
-            child: Text(
-              localizations.formatDecimal(day),
-              style: style,
-            ),
-          ),
-        );
+        Widget dayWidget = customDate == null
+            ? Container(
+                decoration: decoration,
+                child: Center(
+                  child: Text(
+                    localizations.formatDecimal(day),
+                    style: style,
+                  ),
+                ),
+              )
+            : DefaultTextStyle(
+                style: style,
+                child: DecoratedBox(
+                  decoration: decoration,
+                  child: customDate!(dayToBuild),
+                ),
+              );
 
         if (isDisabled) {
           dayWidget = ExcludeSemantics(
